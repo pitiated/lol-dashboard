@@ -44,21 +44,12 @@ async def get_puuid(game_name: str, tag_line: str):
         return response.json()["puuid"]
 
 async def get_summoner_data(puuid: str):
-    """Get summoner data including rank"""
+    """Get summoner data including rank - uses PUUID for league entries"""
     async with httpx.AsyncClient() as client:
         headers = {"X-Riot-Token": RIOT_API_KEY}
-        url = f"{PLATFORM_URL}/lol/summoner/v4/summoners/by-puuid/{puuid}"
-        response = await client.get(url, headers=headers)
-        if response.status_code != 200:
-            raise HTTPException(status_code=404, detail=f"Summoner not found. Status: {response.status_code}, Response: {response.text}")
-        summoner = response.json()
 
-        # Check if summoner has id
-        if 'id' not in summoner:
-            raise HTTPException(status_code=500, detail=f"Summoner data missing 'id' field. Response: {summoner}")
-
-        # Get ranked data
-        ranked_url = f"{PLATFORM_URL}/lol/league/v4/entries/by-summoner/{summoner['id']}"
+        # Get ranked data directly using PUUID (newer API method)
+        ranked_url = f"{PLATFORM_URL}/lol/league/v4/entries/by-puuid/{puuid}"
         ranked_response = await client.get(ranked_url, headers=headers)
         ranked_data = ranked_response.json() if ranked_response.status_code == 200 else []
 
@@ -66,7 +57,6 @@ async def get_summoner_data(puuid: str):
         flex_rank = next((r for r in ranked_data if r["queueType"] == "RANKED_FLEX_SR"), None)
 
         return {
-            "summoner": summoner,
             "rank": flex_rank
         }
 
@@ -142,7 +132,7 @@ async def get_match_stats(request: MatchRequest):
         participants = match_data["info"]["participants"]
         player_stats = []
 
-        for player_info in player_puuids:
+        for idx, player_info in enumerate(player_puuids):
             # Find this player in participants
             participant = next(
                 (p for p in participants if p["puuid"] == player_info["puuid"]),
@@ -150,12 +140,8 @@ async def get_match_stats(request: MatchRequest):
             )
 
             if participant:
-                # Get summoner rank data
-                summoner_info = next(
-                    (s for s in summoner_data_list if s["summoner"]["puuid"] == player_info["puuid"]),
-                    None
-                )
-
+                # Get rank data for this player (summoner_data_list is in same order as player_puuids)
+                summoner_info = summoner_data_list[idx] if idx < len(summoner_data_list) else None
                 rank_info = summoner_info["rank"] if summoner_info else None
 
                 mvp_score = calculate_mvp_score(participant)
