@@ -1,0 +1,288 @@
+.dashboard {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.match-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.match-header h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.match-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  color: #a0a0a0;
+}
+
+.rankings-section {
+  margin-bottom: 3rem;
+}
+
+.rankings-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #ffd700;
+}
+
+.rankings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.ranking-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.ranking-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.rank-1 {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.rank-2 {
+  border-color: #c0c0c0;
+  background: rgba(192, 192, 192, 0.1);
+}
+
+.rank-3 {
+  border-color: #cd7f32;
+  background: rgba(205, 127, 50, 0.1);
+}
+
+.rank-4 {
+  border-color: #666;
+}
+
+.rank-5 {
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.rank-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.rank-emoji {
+  font-size: 2rem;
+}
+
+.rank-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.player-info h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+  color: #e0e0e0;
+}
+
+.champion {
+  color: #ffd700;
+  margin-bottom: 0.25rem;
+}
+
+.rank-display {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.mvp-score {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.mvp-score strong {
+  color: #ffd700;
+  font-size: 1.1rem;
+}
+
+.stats-section {
+  margin-bottom: 3rem;
+}
+
+.stats-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #ffd700;
+}
+
+.stats-table-container {
+  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stats-table th {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  color: #ffd700;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.stats-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stats-table tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.kda-detail {
+  font-family: monospace;
+}
+
+.kda-high {
+  color: #4ecdc4;
+  font-weight: bold;
+}
+
+.kda-med {
+  color: #95e1d3;
+}
+
+.kda-low {
+  color: #ff6b6b;
+}
+
+.items-section {
+  margin-bottom: 3rem;
+}
+
+.items-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #ffd700;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.item-build {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.item-build h4 {
+  margin-bottom: 0.75rem;
+  color: #e0e0e0;
+}
+
+.items-display {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.item-slot {
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.item-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-stats {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+  margin-top: 0.5rem;
+}
+
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 2rem;
+}
+
+.chart-container {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.chart-container h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #ffd700;
+}
+
+@media (max-width: 768px) {
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-table {
+    font-size: 0.85rem;
+  }
+
+  .stats-table th,
+  .stats-table td {
+    padding: 0.5rem;
+  }
+
+  .match-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .rank-emoji {
+    font-size: 1.5rem;
+  }
+}
