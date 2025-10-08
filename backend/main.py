@@ -50,8 +50,12 @@ async def get_summoner_data(puuid: str):
         url = f"{PLATFORM_URL}/lol/summoner/v4/summoners/by-puuid/{puuid}"
         response = await client.get(url, headers=headers)
         if response.status_code != 200:
-            raise HTTPException(status_code=404, detail="Summoner not found")
+            raise HTTPException(status_code=404, detail=f"Summoner not found. Status: {response.status_code}, Response: {response.text}")
         summoner = response.json()
+
+        # Check if summoner has id
+        if 'id' not in summoner:
+            raise HTTPException(status_code=500, detail=f"Summoner data missing 'id' field. Response: {summoner}")
 
         # Get ranked data
         ranked_url = f"{PLATFORM_URL}/lol/league/v4/entries/by-summoner/{summoner['id']}"
