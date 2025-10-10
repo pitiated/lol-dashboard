@@ -85,17 +85,37 @@ const MatchDashboard: React.FC<Props> = ({ data }) => {
     return new Date(isoDate).toLocaleString();
   };
 
-  const damageData = data.players.map(p => ({
-    name: p.gameName,
-    damage: p.damage,
-    damageTaken: p.damageTaken
-  }));
+  // Aggregate team stats for charts
+  const team1TotalDamage = team1.reduce((sum, p) => sum + p.damage, 0);
+  const team2TotalDamage = team2.reduce((sum, p) => sum + p.damage, 0);
+  const team1TotalDamageTaken = team1.reduce((sum, p) => sum + p.damageTaken, 0);
+  const team2TotalDamageTaken = team2.reduce((sum, p) => sum + p.damageTaken, 0);
+  const team1TotalGold = team1.reduce((sum, p) => sum + p.gold, 0);
+  const team2TotalGold = team2.reduce((sum, p) => sum + p.gold, 0);
 
-  const goldData = data.players.map(p => ({
-    name: p.gameName,
-    gold: p.gold,
-    gpm: p.goldPerMinute
-  }));
+  const teamDamageData = [
+    {
+      team: 'Team 1',
+      'Damage Dealt': team1TotalDamage,
+      'Damage Taken': team1TotalDamageTaken
+    },
+    {
+      team: 'Team 2',
+      'Damage Dealt': team2TotalDamage,
+      'Damage Taken': team2TotalDamageTaken
+    }
+  ];
+
+  const teamGoldData = [
+    {
+      team: 'Team 1',
+      'Total Gold': team1TotalGold
+    },
+    {
+      team: 'Team 2',
+      'Total Gold': team2TotalGold
+    }
+  ];
 
   return (
     <div className="dashboard">
@@ -230,49 +250,137 @@ const MatchDashboard: React.FC<Props> = ({ data }) => {
 
       <div className="stats-section">
         <h3>📊 Player Statistics</h3>
-        <div className="stats-table-container">
-          <table className="stats-table">
-            <thead>
-              <tr>
-                <th>Player</th>
-                <th>Champion</th>
-                <th>K/D/A</th>
-                <th>KDA</th>
-                <th>CS</th>
-                <th>Gold</th>
-                <th>DMG</th>
-                <th>DMG Taken</th>
-                <th>Vision</th>
-                <th>KP%</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.players.map((player) => (
-                <tr key={player.gameName}>
-                  <td>
-                    <strong>{player.gameName}</strong>
-                  </td>
-                  <td>{player.champion}</td>
-                  <td>
-                    <span className="kda-detail">
-                      {player.kills}/{player.deaths}/{player.assists}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={player.kda >= 3 ? 'kda-high' : player.kda >= 2 ? 'kda-med' : 'kda-low'}>
-                      {player.kda}
-                    </span>
-                  </td>
-                  <td>{player.cs}</td>
-                  <td>{player.gold.toLocaleString()}</td>
-                  <td>{player.damage.toLocaleString()}</td>
-                  <td>{player.damageTaken.toLocaleString()}</td>
-                  <td>{player.visionScore}</td>
-                  <td>{player.killParticipation}%</td>
+
+        {/* Team 1 Stats */}
+        <div className="team-stats-section">
+          <h4 className={team1Won ? 'team-header win' : 'team-header loss'}>
+            {team1Won ? '🎉 TEAM 1 - VICTORY' : '💀 TEAM 1 - DEFEAT'}
+          </h4>
+          <div className="stats-table-container">
+            <table className="stats-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th>Champion</th>
+                  <th>K/D/A</th>
+                  <th>KDA</th>
+                  <th>CS</th>
+                  <th>Gold</th>
+                  <th>DMG</th>
+                  <th>Vision</th>
+                  <th>KP%</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {team1.map((player) => (
+                  <tr key={player.gameName}>
+                    <td>
+                      <span className="rank-emoji">{getRankingEmoji(player.ranking)}</span>
+                      <span className="rank-text">#{player.ranking}</span>
+                    </td>
+                    <td>
+                      <strong>{player.gameName}</strong>
+                    </td>
+                    <td>
+                      <div className="champion-cell">
+                        <img
+                          src={`https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${player.champion}.png`}
+                          alt={player.champion}
+                          className="champion-icon"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                        <span>{player.champion}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="kda-detail">
+                        {player.kills}/{player.deaths}/{player.assists}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={player.kda >= 3 ? 'kda-high' : player.kda >= 2 ? 'kda-med' : 'kda-low'}>
+                        {player.kda}
+                      </span>
+                    </td>
+                    <td>{player.cs}</td>
+                    <td>{player.gold.toLocaleString()}</td>
+                    <td>{player.damage.toLocaleString()}</td>
+                    <td>{player.visionScore}</td>
+                    <td>{player.killParticipation}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Team 2 Stats */}
+        <div className="team-stats-section">
+          <h4 className={!team1Won ? 'team-header win' : 'team-header loss'}>
+            {!team1Won ? '🎉 TEAM 2 - VICTORY' : '💀 TEAM 2 - DEFEAT'}
+          </h4>
+          <div className="stats-table-container">
+            <table className="stats-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th>Champion</th>
+                  <th>K/D/A</th>
+                  <th>KDA</th>
+                  <th>CS</th>
+                  <th>Gold</th>
+                  <th>DMG</th>
+                  <th>Vision</th>
+                  <th>KP%</th>
+                </tr>
+              </thead>
+              <tbody>
+                {team2.map((player) => (
+                  <tr key={player.gameName}>
+                    <td>
+                      <span className="rank-emoji">{getRankingEmoji(player.ranking)}</span>
+                      <span className="rank-text">#{player.ranking}</span>
+                    </td>
+                    <td>
+                      <strong>{player.gameName}</strong>
+                    </td>
+                    <td>
+                      <div className="champion-cell">
+                        <img
+                          src={`https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${player.champion}.png`}
+                          alt={player.champion}
+                          className="champion-icon"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                        <span>{player.champion}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="kda-detail">
+                        {player.kills}/{player.deaths}/{player.assists}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={player.kda >= 3 ? 'kda-high' : player.kda >= 2 ? 'kda-med' : 'kda-low'}>
+                        {player.kda}
+                      </span>
+                    </td>
+                    <td>{player.cs}</td>
+                    <td>{player.gold.toLocaleString()}</td>
+                    <td>{player.damage.toLocaleString()}</td>
+                    <td>{player.visionScore}</td>
+                    <td>{player.killParticipation}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -308,33 +416,31 @@ const MatchDashboard: React.FC<Props> = ({ data }) => {
 
       <div className="charts-section">
         <div className="chart-container">
-          <h3>⚔️ Damage Comparison</h3>
+          <h3>⚔️ Team Damage Comparison</h3>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={damageData}>
+            <BarChart data={teamDamageData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="team" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="damage" fill="#ff6b6b" name="Damage Dealt" />
-              <Bar dataKey="damageTaken" fill="#4ecdc4" name="Damage Taken" />
+              <Bar dataKey="Damage Dealt" fill="#ff6b6b" />
+              <Bar dataKey="Damage Taken" fill="#4ecdc4" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         <div className="chart-container">
-          <h3>💰 Gold Distribution</h3>
+          <h3>💰 Team Gold Comparison</h3>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={goldData}>
+            <BarChart data={teamGoldData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis yAxisId="left" />
-              <YAxis yAxisId="right" orientation="right" />
+              <XAxis dataKey="team" />
+              <YAxis />
               <Tooltip />
               <Legend />
-              <Line yAxisId="left" type="monotone" dataKey="gold" stroke="#ffd93d" name="Total Gold" strokeWidth={2} />
-              <Line yAxisId="right" type="monotone" dataKey="gpm" stroke="#6bcf7f" name="Gold/Min" strokeWidth={2} />
-            </LineChart>
+              <Bar dataKey="Total Gold" fill="#ffd93d" />
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
