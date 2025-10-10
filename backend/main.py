@@ -265,8 +265,8 @@ async def get_last_5_matches(request: MatchRequest):
 
                 player_stat = {
                     "puuid": participant["puuid"],
-                    "gameName": participant["riotIdGameName"],
-                    "tagLine": participant["riotIdTagLine"],
+                    "gameName": participant.get("riotIdGameName") or participant.get("summonerName", "Unknown"),
+                    "tagLine": participant.get("riotIdTagLine", ""),
                     "champion": participant["championName"],
                     "kills": participant["kills"],
                     "deaths": participant["deaths"],
