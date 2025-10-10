@@ -180,30 +180,59 @@ function App() {
               ))}
             </div>
 
-            <div className="button-group">
-              <button
-                onClick={fetchMatchStats}
-                disabled={loading}
-                className="fetch-button"
-              >
-                {loading ? '⏳ Loading...' : '📊 Get Last Match Stats'}
-              </button>
+            <div className="features-section">
+              <h3 className="features-title">Choose Your Analysis:</h3>
 
-              <button
-                onClick={fetchLast5Matches}
-                disabled={loading}
-                className="fetch-button secondary"
-              >
-                {loading ? '⏳ Loading...' : '🏆 Get Last 5 Matches (1 player only)'}
-              </button>
+              <div className="feature-card">
+                <div className="feature-header">
+                  <span className="feature-icon">📊</span>
+                  <div className="feature-info">
+                    <h4>Last Match Stats</h4>
+                    <p>See ALL 10 players from one match • Rankings 1-10</p>
+                  </div>
+                </div>
+                <button
+                  onClick={fetchMatchStats}
+                  disabled={loading}
+                  className="fetch-button"
+                >
+                  {loading ? '⏳ Loading...' : 'Analyze Match'}
+                </button>
+              </div>
 
-              <button
-                onClick={fetchComparePlayers}
-                disabled={loading}
-                className="fetch-button highlight"
-              >
-                {loading ? '⏳ Loading...' : '⚔️ Compare Squad (1-5 players)'}
-              </button>
+              <div className="feature-card">
+                <div className="feature-header">
+                  <span className="feature-icon">🏆</span>
+                  <div className="feature-info">
+                    <h4>Last 5 Matches</h4>
+                    <p>Track ONE player's performance • Enter 1 player only</p>
+                  </div>
+                </div>
+                <button
+                  onClick={fetchLast5Matches}
+                  disabled={loading}
+                  className="fetch-button secondary"
+                >
+                  {loading ? '⏳ Loading...' : 'View History'}
+                </button>
+              </div>
+
+              <div className="feature-card highlight-card">
+                <div className="feature-header">
+                  <span className="feature-icon">⚔️</span>
+                  <div className="feature-info">
+                    <h4>Compare Squad</h4>
+                    <p>Compare 1-5 players side-by-side • Find the real MVP!</p>
+                  </div>
+                </div>
+                <button
+                  onClick={fetchComparePlayers}
+                  disabled={loading}
+                  className="fetch-button highlight"
+                >
+                  {loading ? '⏳ Loading...' : 'Compare Performance'}
+                </button>
+              </div>
             </div>
 
             {error && <div className="error-message">❌ {error}</div>}
