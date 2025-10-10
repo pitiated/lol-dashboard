@@ -1,19 +1,52 @@
 # 📝 Future Updates & To-Do List
 
-## ✅ What's Done:
-- ✅ Backend deployed to Render: https://lol-dashboard-api.onrender.com
-- ✅ Frontend deployed to Vercel: https://frontend-5olfojjxw-pitiateds-projects.vercel.app
-- ✅ GitHub repo: https://github.com/pitiated/lol-dashboard
-- ✅ MVP ranking system working (👑 to 🤡)
-- ✅ Full stats display (KDA, CS, gold, damage, vision)
-- ✅ Charts (damage comparison, gold distribution)
-- ✅ Item builds display
-- ✅ Ranked tier display
+## ✅ What's Done (Latest Update: Oct 10, 2025):
+
+### Deployment URLs:
+- ✅ Backend: https://lol-dashboard-api.onrender.com
+- ✅ Frontend: https://frontend-fdxy99voj-pitiateds-projects.vercel.app
+- ✅ GitHub: https://github.com/pitiated/lol-dashboard
+
+### Features Implemented:
+- ✅ **Show ALL 10 Players** - Match stats now displays both teams (not just searched players)
+- ✅ **MVP Rankings 1-10** - Expanded from 1-5 to full 10-player rankings
+- ✅ **Team Breakdown** - Separate display for Team 1 vs Team 2 with win/loss indicators
+- ✅ **Squad Comparison** - NEW! Compare 1-5 players' last 5 matches side-by-side
+- ✅ **Performance Tracking** - Tracks MVP count, Top 3 count, Troll count
+- ✅ **Comparison Charts** - KDA, Win Rate, Damage, Gold, MVP Score visualizations
+- ✅ **Last 5 Matches** - Individual player match history with averages
+- ✅ **Full stats display** - KDA, CS, gold, damage, vision, kill participation
+- ✅ **Item builds display** - Shows all items with images
+- ✅ **Ranked tier display** - Shows current rank for each player
+
+## 🎮 How to Use the Dashboard:
+
+### Three Different Features:
+
+**1. Last Match Stats (All 10 Players):**
+- Enter 1-5 players from your squad
+- Shows ALL 10 players from that match (both teams)
+- MVP rankings 1-10 across both teams
+- Team breakdown showing which team won/lost
+
+**2. Last 5 Matches (Single Player History):**
+- Enter ONLY 1 player
+- Shows that player's last 5 Ranked Flex matches
+- Performance trends and averages
+- All 10 players ranked in each match
+
+**3. Compare Squad (Multi-Player Comparison):**
+- Enter 1-5 players (your whole squad!)
+- Compares their last 5 matches side-by-side
+- Shows who's MVP most often, who trolls most, etc.
+- Average stats comparison with charts
+- Perfect for squad performance analysis
 
 ## 🔄 Regular Maintenance:
 
 ### Update API Key (Every 24 hours for Dev Key)
-Your current API key: `RGAPI-57192b72-1d16-4368-8467-1ceee10dde38`
+Your current API key: `RGAPI-7d08eaae-d23d-404c-92a7-f7bb8dd67f26`
+Last updated: Oct 10, 2025
 
 **When it expires:**
 1. Get new key: https://developer.riotgames.com/
@@ -26,21 +59,49 @@ Your current API key: `RGAPI-57192b72-1d16-4368-8467-1ceee10dde38`
 
 **For permanent solution:** Apply for Production API key (never expires) at https://developer.riotgames.com/
 
+## 📋 API Endpoints Available:
+
+### Backend API: https://lol-dashboard-api.onrender.com
+
+**1. POST /api/match-stats**
+- Get last match stats with ALL 10 players
+- Input: 1-5 players (uses first player's most recent match)
+- Returns: All 10 players from that match with MVP rankings 1-10
+
+**2. POST /api/last-5-matches**
+- Get last 5 matches for ONE player
+- Input: Exactly 1 player
+- Returns: Player's last 5 matches with averages and performance stats
+
+**3. POST /api/compare-players** (NEW!)
+- Compare 1-5 players' last 5 matches
+- Input: 1-5 players
+- Returns: Side-by-side comparison with charts and performance metrics
+
+All endpoints use same request format:
+```json
+{
+  "players": [
+    {"game_name": "Pitiated", "tag_line": "ehne"},
+    {"game_name": "DawWatcher", "tag_line": "LAS"}
+  ]
+}
+```
+
 ## 📋 Ideas for Future Updates:
 
 ### Features to Add:
-- [ ] Match history (last 5-10 games)
-- [ ] Performance trends/graphs over time
+- [ ] Performance trends/graphs over time (weekly/monthly)
 - [ ] Champion mastery display
-- [ ] Team composition analysis
-- [ ] Save favorite player groups
-- [ ] Compare multiple matches
+- [ ] Team composition analysis (synergy checker)
+- [ ] Save favorite player groups (localStorage)
 - [ ] Export stats as image/PDF
 - [ ] Dark/light theme toggle
-- [ ] Mobile app version
 - [ ] Discord bot integration
 - [ ] Live game tracking
-- [ ] Custom ranking weights (adjust MVP formula)
+- [ ] Custom ranking weights (let users adjust MVP formula)
+- [ ] Multi-region support (currently LAS only)
+- [ ] Champion-specific stats (best/worst champions per player)
 
 ### UI Improvements:
 - [ ] Better mobile responsiveness
@@ -117,7 +178,7 @@ C:\Users\sebao\lol-dashboard\
 
 ## 🌐 Your Live URLs:
 
-**Dashboard:** https://frontend-5olfojjxw-pitiateds-projects.vercel.app
+**Dashboard:** https://frontend-fdxy99voj-pitiateds-projects.vercel.app
 **Backend API:** https://lol-dashboard-api.onrender.com
 **GitHub:** https://github.com/pitiated/lol-dashboard
 
@@ -127,6 +188,29 @@ C:\Users\sebao\lol-dashboard\
 - DRiLLoN#LAS
 - Haao3#LAS
 - caldesaun#LAS
+
+## 🆕 Latest Updates (Oct 10, 2025):
+
+### v2.0 - Squad Comparison & Full Match Display
+**New Features:**
+1. **All 10 Players Display** - Match stats now shows both teams
+2. **MVP Rankings 1-10** - Everyone gets ranked (not just your squad)
+3. **Team Breakdown Tables** - See Team 1 vs Team 2 with win/loss
+4. **Squad Comparison Tool** - Compare up to 5 players' last 5 matches
+5. **Performance Metrics** - Track MVP count, Top 3 count, Troll count
+6. **Comparison Charts** - Visual charts for KDA, Damage, Gold, MVP Score
+
+**Bug Fixes:**
+- Fixed API key expiration issue
+- Updated to new API key system
+- Improved error handling for network errors
+
+**UI Improvements:**
+- New ranking emojis for ranks 1-10
+- Orange gradient button for Compare Squad
+- Color-coded win/loss indicators
+- Performance badges (MVP, Top 3, Troll)
+- Podium-style rankings display
 
 ## 💡 Quick Tips:
 
