@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 import MatchDashboard from './components/MatchDashboard';
+import Last5Matches from './components/Last5Matches';
 
 interface Player {
   game_name: string;
@@ -17,6 +18,7 @@ function App() {
     { game_name: '', tag_line: '' }
   ]);
   const [matchData, setMatchData] = useState<any>(null);
+  const [last5MatchesData, setLast5MatchesData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const [apiKey, setApiKey] = useState('');
@@ -33,6 +35,7 @@ function App() {
     setLoading(true);
     setError('');
     setMatchData(null);
+    setLast5MatchesData(null);
 
     try {
       const filledPlayers = players.filter(p => p.game_name && p.tag_line);
@@ -57,6 +60,41 @@ function App() {
     }
   };
 
+  const fetchLast5Matches = async () => {
+    setLoading(true);
+    setError('');
+    setMatchData(null);
+    setLast5MatchesData(null);
+
+    try {
+      const filledPlayers = players.filter(p => p.game_name && p.tag_line);
+
+      if (filledPlayers.length === 0) {
+        setError('Please enter at least one player');
+        setLoading(false);
+        return;
+      }
+
+      if (filledPlayers.length > 1) {
+        setError('Please enter only ONE player for last 5 matches view');
+        setLoading(false);
+        return;
+      }
+
+      const response = await axios.post(`${API_URL}/api/last-5-matches`, {
+        players: filledPlayers
+      }, {
+        headers: apiKey ? { 'X-API-Key': apiKey } : {}
+      });
+
+      setLast5MatchesData(response.data);
+    } catch (err: any) {
+      setError(err.response?.data?.detail || err.message || 'Failed to fetch last 5 matches data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -65,7 +103,7 @@ function App() {
       </header>
 
       <div className="container">
-        {!matchData && (
+        {!matchData && !last5MatchesData && (
           <div className="input-section">
             <div className="api-key-section">
               <label>Riot API Key (optional for local testing):</label>
@@ -102,13 +140,23 @@ function App() {
               ))}
             </div>
 
-            <button
-              onClick={fetchMatchStats}
-              disabled={loading}
-              className="fetch-button"
-            >
-              {loading ? '⏳ Loading...' : '📊 Get Last Match Stats'}
-            </button>
+            <div className="button-group">
+              <button
+                onClick={fetchMatchStats}
+                disabled={loading}
+                className="fetch-button"
+              >
+                {loading ? '⏳ Loading...' : '📊 Get Last Match Stats'}
+              </button>
+
+              <button
+                onClick={fetchLast5Matches}
+                disabled={loading}
+                className="fetch-button secondary"
+              >
+                {loading ? '⏳ Loading...' : '🏆 Get Last 5 Matches (1 player only)'}
+              </button>
+            </div>
 
             {error && <div className="error-message">❌ {error}</div>}
           </div>
@@ -120,6 +168,15 @@ function App() {
               ← Enter New Players
             </button>
             <MatchDashboard data={matchData} />
+          </div>
+        )}
+
+        {last5MatchesData && (
+          <div>
+            <button onClick={() => setLast5MatchesData(null)} className="back-button">
+              ← Enter New Player
+            </button>
+            <Last5Matches data={last5MatchesData} />
           </div>
         )}
       </div>

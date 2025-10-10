@@ -1,0 +1,300 @@
+.last-5-matches {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.player-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  color: white;
+}
+
+.player-header h2 {
+  margin: 0 0 10px 0;
+  font-size: 2em;
+}
+
+.rank-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.averages-section {
+  margin-bottom: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 15px;
+  color: white;
+}
+
+.averages-section h3 {
+  margin: 0 0 20px 0;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.averages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.avg-stat {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9em;
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-detail {
+  display: block;
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+.matches-list {
+  margin-top: 30px;
+}
+
+.matches-list h3 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.match-card {
+  background: #1a1a2e;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 3px solid;
+  transition: transform 0.2s;
+}
+
+.match-card:hover {
+  transform: translateY(-5px);
+}
+
+.match-card.win {
+  border-color: #00ff88;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+.match-card.loss {
+  border-color: #ff4757;
+  background: linear-gradient(135deg, #2c1a1e 0%, #3d2433 50%, #4a2c42 100%);
+}
+
+.match-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.match-number {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #fff;
+}
+
+.match-result {
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 5px 15px;
+  border-radius: 20px;
+}
+
+.match-result.win {
+  background: #00ff88;
+  color: #000;
+}
+
+.match-result.loss {
+  background: #ff4757;
+  color: #fff;
+}
+
+.match-time {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9em;
+}
+
+.match-player-performance {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.player-rank {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.rank-emoji {
+  font-size: 2.5em;
+  margin-bottom: 5px;
+}
+
+.rank-label {
+  font-weight: bold;
+  color: #fff;
+}
+
+.player-stats-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  color: #fff;
+  font-size: 1.1em;
+}
+
+.champion {
+  font-weight: bold;
+  color: #ffd700;
+  font-size: 1.2em;
+}
+
+.kda {
+  font-weight: 600;
+}
+
+.kda-ratio {
+  margin-left: 10px;
+  color: #00ff88;
+  font-weight: bold;
+}
+
+.cs, .dmg {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mvp-score {
+  margin-left: auto;
+  font-weight: bold;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 5px 15px;
+  border-radius: 15px;
+}
+
+.teammates-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.teammates-section h4 {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 1em;
+  opacity: 0.8;
+}
+
+.teammates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.teammate-row {
+  display: grid;
+  grid-template-columns: 60px 200px 150px 120px 120px;
+  gap: 15px;
+  align-items: center;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95em;
+}
+
+.teammate-row.highlighted {
+  background: rgba(255, 215, 0, 0.1);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  color: #fff;
+  font-weight: 600;
+}
+
+.teammate-rank {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.teammate-name {
+  font-weight: 500;
+}
+
+.teammate-champion {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.teammate-kda {
+  font-weight: 500;
+}
+
+.teammate-mvp {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .averages-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .match-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .player-stats-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .teammate-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .mvp-score {
+    margin-left: 0;
+  }
+}
