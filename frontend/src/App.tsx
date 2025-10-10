@@ -3,6 +3,7 @@ import axios from 'axios';
 import './App.css';
 import MatchDashboard from './components/MatchDashboard';
 import Last5Matches from './components/Last5Matches';
+import PlayerComparison from './components/PlayerComparison';
 
 interface Player {
   game_name: string;
@@ -19,6 +20,7 @@ function App() {
   ]);
   const [matchData, setMatchData] = useState<any>(null);
   const [last5MatchesData, setLast5MatchesData] = useState<any>(null);
+  const [comparisonData, setComparisonData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const [apiKey, setApiKey] = useState('');
@@ -36,6 +38,7 @@ function App() {
     setError('');
     setMatchData(null);
     setLast5MatchesData(null);
+    setComparisonData(null);
 
     try {
       const filledPlayers = players.filter(p => p.game_name && p.tag_line);
@@ -65,6 +68,7 @@ function App() {
     setError('');
     setMatchData(null);
     setLast5MatchesData(null);
+    setComparisonData(null);
 
     try {
       const filledPlayers = players.filter(p => p.game_name && p.tag_line);
@@ -95,6 +99,42 @@ function App() {
     }
   };
 
+  const fetchComparePlayers = async () => {
+    setLoading(true);
+    setError('');
+    setMatchData(null);
+    setLast5MatchesData(null);
+    setComparisonData(null);
+
+    try {
+      const filledPlayers = players.filter(p => p.game_name && p.tag_line);
+
+      if (filledPlayers.length === 0) {
+        setError('Please enter at least one player');
+        setLoading(false);
+        return;
+      }
+
+      if (filledPlayers.length > 5) {
+        setError('Please enter a maximum of 5 players for comparison');
+        setLoading(false);
+        return;
+      }
+
+      const response = await axios.post(`${API_URL}/api/compare-players`, {
+        players: filledPlayers
+      }, {
+        headers: apiKey ? { 'X-API-Key': apiKey } : {}
+      });
+
+      setComparisonData(response.data);
+    } catch (err: any) {
+      setError(err.response?.data?.detail || err.message || 'Failed to fetch comparison data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -103,7 +143,7 @@ function App() {
       </header>
 
       <div className="container">
-        {!matchData && !last5MatchesData && (
+        {!matchData && !last5MatchesData && !comparisonData && (
           <div className="input-section">
             <div className="api-key-section">
               <label>Riot API Key (optional for local testing):</label>
@@ -156,6 +196,14 @@ function App() {
               >
                 {loading ? '⏳ Loading...' : '🏆 Get Last 5 Matches (1 player only)'}
               </button>
+
+              <button
+                onClick={fetchComparePlayers}
+                disabled={loading}
+                className="fetch-button highlight"
+              >
+                {loading ? '⏳ Loading...' : '⚔️ Compare Squad (1-5 players)'}
+              </button>
             </div>
 
             {error && <div className="error-message">❌ {error}</div>}
@@ -177,6 +225,15 @@ function App() {
               ← Enter New Player
             </button>
             <Last5Matches data={last5MatchesData} />
+          </div>
+        )}
+
+        {comparisonData && (
+          <div>
+            <button onClick={() => setComparisonData(null)} className="back-button">
+              ← Enter New Players
+            </button>
+            <PlayerComparison data={comparisonData} />
           </div>
         )}
       </div>

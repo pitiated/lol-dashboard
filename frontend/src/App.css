@@ -157,6 +157,11 @@ body {
   color: #fff;
 }
 
+.fetch-button.highlight {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8c42 100%);
+  color: #fff;
+}
+
 .fetch-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
@@ -164,6 +169,10 @@ body {
 
 .fetch-button.secondary:hover {
   box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+.fetch-button.highlight:hover {
+  box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3);
 }
 
 .fetch-button:disabled {

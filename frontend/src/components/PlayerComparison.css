@@ -1,0 +1,393 @@
+.player-comparison {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comparison-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.comparison-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.comparison-header .subtitle {
+  color: #a0a0a0;
+  font-size: 1.1rem;
+}
+
+/* Overall Rankings */
+.overall-rankings {
+  margin-bottom: 3rem;
+}
+
+.overall-rankings h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #ffd700;
+}
+
+.rankings-podium {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.podium-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s;
+}
+
+.podium-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.podium-card.rank-1 {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.podium-card.rank-2 {
+  border-color: #c0c0c0;
+  background: rgba(192, 192, 192, 0.1);
+}
+
+.podium-card.rank-3 {
+  border-color: #cd7f32;
+  background: rgba(205, 127, 50, 0.1);
+}
+
+.podium-rank {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.podium-player {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.podium-player h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+}
+
+.rank-display {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.podium-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.podium-stats .stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #e0e0e0;
+}
+
+.stat-value.highlight {
+  color: #ffd700;
+}
+
+.stat-value.good {
+  color: #4ecdc4;
+}
+
+.stat-value.bad {
+  color: #ff6b6b;
+}
+
+.performance-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.badge.mvp {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+}
+
+.badge.top3 {
+  background: rgba(205, 127, 50, 0.2);
+  color: #cd7f32;
+}
+
+.badge.troll {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff6b6b;
+}
+
+/* Comparison Charts */
+.comparison-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.chart-container {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.chart-container h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #ffd700;
+}
+
+/* Detailed Stats Table */
+.detailed-comparison {
+  margin-bottom: 3rem;
+}
+
+.detailed-comparison h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #ffd700;
+}
+
+.stats-table-container {
+  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparison-table th {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  color: #ffd700;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.comparison-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.comparison-table tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.comparison-table tr.best {
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.kda-cell {
+  font-family: monospace;
+}
+
+.kda-high {
+  color: #4ecdc4;
+  font-weight: bold;
+}
+
+.kda-med {
+  color: #95e1d3;
+}
+
+.kda-low {
+  color: #ff6b6b;
+}
+
+.win-rate.good {
+  color: #4ecdc4;
+  font-weight: bold;
+}
+
+.win-rate.bad {
+  color: #ff6b6b;
+}
+
+/* Match Histories */
+.match-histories {
+  margin-bottom: 3rem;
+}
+
+.match-histories h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #ffd700;
+}
+
+.histories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.player-history {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.player-history h4 {
+  margin-bottom: 1rem;
+  color: #ffd700;
+  text-align: center;
+}
+
+.matches-list-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.match-row-compact {
+  display: grid;
+  grid-template-columns: 30px 1fr 80px 60px 30px;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border-left: 3px solid transparent;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.match-row-compact:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(4px);
+}
+
+.match-row-compact.win {
+  border-left-color: #4ecdc4;
+}
+
+.match-row-compact.loss {
+  border-left-color: #ff6b6b;
+}
+
+.match-num {
+  color: #a0a0a0;
+  font-weight: bold;
+}
+
+.match-champ {
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+.match-kda {
+  font-family: monospace;
+  color: #a0a0a0;
+}
+
+.match-rank {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.match-rank.rank-1,
+.match-rank.rank-2,
+.match-rank.rank-3 {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.match-rank.rank-10 {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.match-result {
+  font-weight: bold;
+  text-align: center;
+}
+
+.match-row-compact.win .match-result {
+  color: #4ecdc4;
+}
+
+.match-row-compact.loss .match-result {
+  color: #ff6b6b;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .comparison-charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .comparison-table {
+    font-size: 0.85rem;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.5rem;
+  }
+
+  .podium-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .match-row-compact {
+    grid-template-columns: 25px 1fr 70px 55px 25px;
+    font-size: 0.8rem;
+  }
+}

@@ -363,6 +363,159 @@ async def get_last_5_matches(request: MatchRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/api/compare-players")
+async def compare_players(request: MatchRequest):
+    """Compare last 5 matches for multiple players (1-5 players)"""
+    try:
+        if len(request.players) < 1 or len(request.players) > 5:
+            raise HTTPException(status_code=400, detail="Please provide 1-5 players for comparison")
+
+        all_player_stats = []
+
+        for player in request.players:
+            # Get PUUID
+            puuid = await get_puuid(player.game_name, player.tag_line)
+
+            # Get last 5 match IDs
+            match_ids = await get_last_n_matches(puuid, count=5)
+
+            if not match_ids:
+                # Skip players with no matches
+                continue
+
+            # Get summoner data
+            summoner_data = await get_summoner_data(puuid)
+
+            player_totals = {
+                "kills": 0,
+                "deaths": 0,
+                "assists": 0,
+                "cs": 0,
+                "gold": 0,
+                "damage": 0,
+                "visionScore": 0,
+                "mvpScore": 0,
+                "wins": 0,
+                "games": 0,
+                "mvp_count": 0,  # Times ranked #1
+                "top3_count": 0,  # Times ranked top 3
+                "troll_count": 0,  # Times ranked last (10th)
+            }
+
+            match_details = []
+
+            # Fetch details for each match
+            for match_id in match_ids:
+                match_data = await get_match_details(match_id)
+                participants = match_data["info"]["participants"]
+
+                # Find this player in participants
+                player_participant = next(
+                    (p for p in participants if p["puuid"] == puuid),
+                    None
+                )
+
+                if player_participant:
+                    # Calculate MVP scores for all players in this match
+                    all_mvp_scores = []
+                    for p in participants:
+                        mvp_score = calculate_mvp_score(p)
+                        all_mvp_scores.append({"puuid": p["puuid"], "mvpScore": mvp_score})
+
+                    # Sort to get rankings
+                    all_mvp_scores.sort(key=lambda x: x["mvpScore"], reverse=True)
+
+                    # Find player's ranking
+                    player_ranking = next(
+                        (idx + 1 for idx, item in enumerate(all_mvp_scores) if item["puuid"] == puuid),
+                        11
+                    )
+
+                    player_mvp_score = calculate_mvp_score(player_participant)
+
+                    # Update totals
+                    player_totals["kills"] += player_participant["kills"]
+                    player_totals["deaths"] += player_participant["deaths"]
+                    player_totals["assists"] += player_participant["assists"]
+                    player_totals["cs"] += player_participant["totalMinionsKilled"] + player_participant["neutralMinionsKilled"]
+                    player_totals["gold"] += player_participant["goldEarned"]
+                    player_totals["damage"] += player_participant["totalDamageDealtToChampions"]
+                    player_totals["visionScore"] += player_participant["visionScore"]
+                    player_totals["mvpScore"] += player_mvp_score
+                    player_totals["wins"] += 1 if player_participant["win"] else 0
+                    player_totals["games"] += 1
+
+                    # Track MVP performance
+                    if player_ranking == 1:
+                        player_totals["mvp_count"] += 1
+                    if player_ranking <= 3:
+                        player_totals["top3_count"] += 1
+                    if player_ranking == 10:
+                        player_totals["troll_count"] += 1
+
+                    match_details.append({
+                        "matchId": match_id,
+                        "champion": player_participant["championName"],
+                        "kills": player_participant["kills"],
+                        "deaths": player_participant["deaths"],
+                        "assists": player_participant["assists"],
+                        "kda": round((player_participant["kills"] + player_participant["assists"]) / max(player_participant["deaths"], 1), 2),
+                        "win": player_participant["win"],
+                        "mvpScore": player_mvp_score,
+                        "ranking": player_ranking,
+                        "gameCreation": datetime.fromtimestamp(match_data["info"]["gameCreation"] / 1000).isoformat(),
+                    })
+
+            # Calculate averages
+            games_count = player_totals["games"]
+            averages = {
+                "kills": round(player_totals["kills"] / games_count, 1) if games_count > 0 else 0,
+                "deaths": round(player_totals["deaths"] / games_count, 1) if games_count > 0 else 0,
+                "assists": round(player_totals["assists"] / games_count, 1) if games_count > 0 else 0,
+                "kda": round((player_totals["kills"] + player_totals["assists"]) / max(player_totals["deaths"], 1), 2),
+                "cs": round(player_totals["cs"] / games_count, 1) if games_count > 0 else 0,
+                "gold": round(player_totals["gold"] / games_count, 0) if games_count > 0 else 0,
+                "damage": round(player_totals["damage"] / games_count, 0) if games_count > 0 else 0,
+                "visionScore": round(player_totals["visionScore"] / games_count, 1) if games_count > 0 else 0,
+                "mvpScore": round(player_totals["mvpScore"] / games_count, 2) if games_count > 0 else 0,
+                "winRate": round((player_totals["wins"] / games_count * 100), 1) if games_count > 0 else 0,
+            }
+
+            rank_info = summoner_data["rank"]
+
+            all_player_stats.append({
+                "player": {
+                    "gameName": player.game_name,
+                    "tagLine": player.tag_line,
+                    "rank": {
+                        "tier": rank_info["tier"] if rank_info else "UNRANKED",
+                        "division": rank_info["rank"] if rank_info else "",
+                        "lp": rank_info["leaguePoints"] if rank_info else 0
+                    } if rank_info else None
+                },
+                "averages": averages,
+                "performance": {
+                    "mvpCount": player_totals["mvp_count"],
+                    "top3Count": player_totals["top3_count"],
+                    "trollCount": player_totals["troll_count"],
+                },
+                "totalGames": games_count,
+                "matches": match_details
+            })
+
+        # Sort by average MVP score (best to worst)
+        all_player_stats.sort(key=lambda x: x["averages"]["mvpScore"], reverse=True)
+
+        return {
+            "players": all_player_stats,
+            "comparedPlayers": len(all_player_stats)
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
