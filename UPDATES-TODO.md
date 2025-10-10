@@ -4,7 +4,7 @@
 
 ### Deployment URLs:
 - ✅ Backend: https://lol-dashboard-api.onrender.com
-- ✅ Frontend: https://frontend-fdxy99voj-pitiateds-projects.vercel.app
+- ✅ Frontend: https://frontend-li8p06x96-pitiateds-projects.vercel.app
 - ✅ GitHub: https://github.com/pitiated/lol-dashboard
 
 ### Features Implemented:
@@ -178,7 +178,7 @@ C:\Users\sebao\lol-dashboard\
 
 ## 🌐 Your Live URLs:
 
-**Dashboard:** https://frontend-fdxy99voj-pitiateds-projects.vercel.app
+**Dashboard:** https://frontend-li8p06x96-pitiateds-projects.vercel.app
 **Backend API:** https://lol-dashboard-api.onrender.com
 **GitHub:** https://github.com/pitiated/lol-dashboard
 
