@@ -117,84 +117,82 @@ async def root():
 
 @app.post("/api/match-stats")
 async def get_match_stats(request: MatchRequest):
-    """Get last match stats for a group of players"""
+    """Get last match stats for a group of players - returns ALL 10 players with MVP rankings"""
     try:
-        # Get PUUIDs for all players
-        player_puuids = []
+        # Get PUUIDs for searched players
+        searched_player_puuids = []
         for player in request.players:
             puuid = await get_puuid(player.game_name, player.tag_line)
-            player_puuids.append({
+            searched_player_puuids.append({
                 "puuid": puuid,
                 "game_name": player.game_name,
                 "tag_line": player.tag_line
             })
 
         # Get the most recent match from first player
-        match_id = await get_last_match(player_puuids[0]["puuid"])
+        match_id = await get_last_match(searched_player_puuids[0]["puuid"])
 
         # Get match details
         match_data = await get_match_details(match_id)
 
-        # Get summoner data for all players
-        summoner_tasks = [get_summoner_data(p["puuid"]) for p in player_puuids]
+        # Extract ALL participants from the match
+        participants = match_data["info"]["participants"]
+
+        # Get all PUUIDs from match
+        all_puuids = [p["puuid"] for p in participants]
+
+        # Get summoner data for ALL players in the match
+        summoner_tasks = [get_summoner_data(puuid) for puuid in all_puuids]
         summoner_data_list = await asyncio.gather(*summoner_tasks)
 
-        # Extract relevant participant data
-        participants = match_data["info"]["participants"]
+        # Build stats for ALL 10 players
         player_stats = []
 
-        for idx, player_info in enumerate(player_puuids):
-            # Find this player in participants
-            participant = next(
-                (p for p in participants if p["puuid"] == player_info["puuid"]),
-                None
-            )
+        for idx, participant in enumerate(participants):
+            summoner_info = summoner_data_list[idx] if idx < len(summoner_data_list) else None
+            rank_info = summoner_info["rank"] if summoner_info else None
 
-            if participant:
-                # Get rank data for this player (summoner_data_list is in same order as player_puuids)
-                summoner_info = summoner_data_list[idx] if idx < len(summoner_data_list) else None
-                rank_info = summoner_info["rank"] if summoner_info else None
+            mvp_score = calculate_mvp_score(participant)
 
-                mvp_score = calculate_mvp_score(participant)
+            player_stats.append({
+                "gameName": participant.get("riotIdGameName") or participant.get("summonerName", "Unknown"),
+                "tagLine": participant.get("riotIdTagLine", ""),
+                "champion": participant["championName"],
+                "kills": participant["kills"],
+                "deaths": participant["deaths"],
+                "assists": participant["assists"],
+                "kda": round((participant["kills"] + participant["assists"]) / max(participant["deaths"], 1), 2),
+                "cs": participant["totalMinionsKilled"] + participant["neutralMinionsKilled"],
+                "gold": participant["goldEarned"],
+                "damage": participant["totalDamageDealtToChampions"],
+                "damageTaken": participant["totalDamageTaken"],
+                "visionScore": participant["visionScore"],
+                "items": [
+                    participant["item0"],
+                    participant["item1"],
+                    participant["item2"],
+                    participant["item3"],
+                    participant["item4"],
+                    participant["item5"],
+                    participant["item6"]
+                ],
+                "win": participant["win"],
+                "mvpScore": mvp_score,
+                "goldPerMinute": round(participant["goldEarned"] / (participant["timePlayed"] / 60), 2),
+                "damagePerMinute": round(participant["totalDamageDealtToChampions"] / (participant["timePlayed"] / 60), 2),
+                "killParticipation": round(participant.get("challenges", {}).get("killParticipation", 0) * 100, 1),
+                "teamId": participant["teamId"],  # Add team info (100 or 200)
+                "rank": {
+                    "tier": rank_info["tier"] if rank_info else "UNRANKED",
+                    "division": rank_info["rank"] if rank_info else "",
+                    "lp": rank_info["leaguePoints"] if rank_info else 0
+                } if rank_info else None
+            })
 
-                player_stats.append({
-                    "gameName": player_info["game_name"],
-                    "tagLine": player_info["tag_line"],
-                    "champion": participant["championName"],
-                    "kills": participant["kills"],
-                    "deaths": participant["deaths"],
-                    "assists": participant["assists"],
-                    "kda": round((participant["kills"] + participant["assists"]) / max(participant["deaths"], 1), 2),
-                    "cs": participant["totalMinionsKilled"] + participant["neutralMinionsKilled"],
-                    "gold": participant["goldEarned"],
-                    "damage": participant["totalDamageDealtToChampions"],
-                    "damageTaken": participant["totalDamageTaken"],
-                    "visionScore": participant["visionScore"],
-                    "items": [
-                        participant["item0"],
-                        participant["item1"],
-                        participant["item2"],
-                        participant["item3"],
-                        participant["item4"],
-                        participant["item5"],
-                        participant["item6"]
-                    ],
-                    "win": participant["win"],
-                    "mvpScore": mvp_score,
-                    "goldPerMinute": round(participant["goldEarned"] / (participant["timePlayed"] / 60), 2),
-                    "damagePerMinute": round(participant["totalDamageDealtToChampions"] / (participant["timePlayed"] / 60), 2),
-                    "killParticipation": round(participant.get("challenges", {}).get("killParticipation", 0) * 100, 1),
-                    "rank": {
-                        "tier": rank_info["tier"] if rank_info else "UNRANKED",
-                        "division": rank_info["rank"] if rank_info else "",
-                        "lp": rank_info["leaguePoints"] if rank_info else 0
-                    } if rank_info else None
-                })
-
-        # Sort by MVP score
+        # Sort by MVP score (all 10 players ranked together)
         player_stats.sort(key=lambda x: x["mvpScore"], reverse=True)
 
-        # Add rankings
+        # Add rankings (1-10)
         for idx, player in enumerate(player_stats):
             player["ranking"] = idx + 1
 
