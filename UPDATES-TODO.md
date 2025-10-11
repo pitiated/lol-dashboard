@@ -4,20 +4,23 @@
 
 ### Deployment URLs:
 - ✅ Backend: https://lol-dashboard-api.onrender.com
-- ✅ Frontend: https://frontend-li8p06x96-pitiateds-projects.vercel.app
+- ✅ Frontend: https://frontend-2lhvn49tx-pitiateds-projects.vercel.app
 - ✅ GitHub: https://github.com/pitiated/lol-dashboard
 
 ### Features Implemented:
 - ✅ **Show ALL 10 Players** - Match stats now displays both teams (not just searched players)
-- ✅ **MVP Rankings 1-10** - Expanded from 1-5 to full 10-player rankings
+- ✅ **MVP Rankings 1-10** - Expanded from 1-5 to full 10-player rankings with clear display
 - ✅ **Team Breakdown** - Separate display for Team 1 vs Team 2 with win/loss indicators
-- ✅ **Squad Comparison** - NEW! Compare 1-5 players' last 5 matches side-by-side
+- ✅ **Squad Comparison** - Compare 1-5 players' last 5 matches side-by-side
 - ✅ **Performance Tracking** - Tracks MVP count, Top 3 count, Troll count
-- ✅ **Comparison Charts** - KDA, Win Rate, Damage, Gold, MVP Score visualizations
+- ✅ **Team vs Team Charts** - Damage and Gold comparison by team (not individual players)
+- ✅ **Champion Icons** - Visual champion portraits in statistics tables
+- ✅ **Team-Separated Stats** - Two separate tables for Team 1 and Team 2
 - ✅ **Last 5 Matches** - Individual player match history with averages
 - ✅ **Full stats display** - KDA, CS, gold, damage, vision, kill participation
 - ✅ **Item builds display** - Shows all items with images
 - ✅ **Ranked tier display** - Shows current rank for each player
+- ✅ **Clear Rankings** - Emoji + Number (#5) + Label format for easy reading
 
 ## 🎮 How to Use the Dashboard:
 
@@ -178,7 +181,7 @@ C:\Users\sebao\lol-dashboard\
 
 ## 🌐 Your Live URLs:
 
-**Dashboard:** https://frontend-li8p06x96-pitiateds-projects.vercel.app
+**Dashboard:** https://frontend-2lhvn49tx-pitiateds-projects.vercel.app
 **Backend API:** https://lol-dashboard-api.onrender.com
 **GitHub:** https://github.com/pitiated/lol-dashboard
 
@@ -190,6 +193,28 @@ C:\Users\sebao\lol-dashboard\
 - caldesaun#LAS
 
 ## 🆕 Latest Updates (Oct 10, 2025):
+
+### v2.1 - Major UX Improvements (Latest!)
+**Visual Enhancements:**
+- **Champion Icons** - 32px rounded images in statistics tables
+- **Team-Separated Tables** - Stats split into Team 1 and Team 2 tables
+- **Team Headers** - Green for victory, red for defeat with clear indicators
+- **Rank Column Added** - Shows emoji + #number for each player
+- **Clear Rankings** - Fixed "😐 #5 OK" display (was confusing "50K" before)
+- **Larger Emojis** - 2.5rem size for better visibility
+- **Better Spacing** - Clearer separation between rank elements
+
+**Chart Improvements:**
+- **Team vs Team Charts** - Now compares Team 1 vs Team 2 totals
+- **Damage Comparison** - Team total damage dealt/taken (not individual)
+- **Gold Comparison** - Team total gold (simpler and clearer)
+- **Easier to Understand** - Quick team performance overview
+
+**Feature Cards UI:**
+- Beautiful feature card design with icons and descriptions
+- "Compare Squad" card highlighted with orange theme
+- Clear "Choose Your Analysis:" section
+- Better button labels: "Analyze Match", "View History", "Compare Performance"
 
 ### v2.0 - Squad Comparison & Full Match Display
 **New Features:**

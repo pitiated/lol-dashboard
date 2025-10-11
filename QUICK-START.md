@@ -1,7 +1,7 @@
 # 🚀 Quick Start Guide - LoL Flex Squad Dashboard
 
 ## 📍 Your Dashboard
-**Live URL:** https://frontend-li8p06x96-pitiateds-projects.vercel.app
+**Live URL:** https://frontend-2lhvn49tx-pitiateds-projects.vercel.app
 
 ---
 
@@ -147,7 +147,7 @@
 
 ## 📱 Links
 
-- **Dashboard:** https://frontend-li8p06x96-pitiateds-projects.vercel.app
+- **Dashboard:** https://frontend-2lhvn49tx-pitiateds-projects.vercel.app
 - **Backend API:** https://lol-dashboard-api.onrender.com
 - **GitHub Repo:** https://github.com/pitiated/lol-dashboard
 - **Riot Developer Portal:** https://developer.riotgames.com/
